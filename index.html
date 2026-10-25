@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebFlow | Website Profesional, Bisnis Lebih Meyakinkan</title>
+    <meta name="description" content="Jasa pembuatan website profesional, modern, dan responsif untuk UMKM, bisnis lokal, dan profesional.">
+    
+    <!-- Script pencegah scroll otomatis dari browser sebelum rendering -->
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
+    
+    <!-- Google Fonts: Manrope (Headings) & DM Sans (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS with Custom Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Manrope', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        // Mapping Tailwind classes to Custom CSS Variables
+                        bg: 'var(--color-bg)',
+                        surface: 'var(--color-surface)',
+                        content: 'var(--color-text)',
+                        muted: 'var(--color-text-muted)',
+                        primary: 'var(--color-primary)',
+                        'primary-hover': 'var(--color-primary-hover)',
+                        accent: 'var(--color-accent)',
+                        border: 'var(--color-border)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS Properties (Design Tokens) -->
+    <style>
+        /* BASE THEME (LIGHT) */
+        :root {
+            color-scheme: light;
+            --color-bg: #F4F0E8;       /* Warm Ivory */
+            --color-surface: #FFFFFF;  /* White */
+            --color-text: #111111;     /* Obsidian Black */
+            --color-text-muted: #77716B; /* Muted Stone */
+            --color-primary: #C65D32;  /* Burnt Orange */
+            --color-primary-hover: #A94A27; 
+            --color-accent: #E87524;   /* Bright Ember */
+            --color-border: #DDD6CB;   /* Light Border */
+        }
+
+        /* DARK THEME */
+        .dark {
+            color-scheme: dark;
+            --color-bg: #111111;       /* Obsidian Black */
+            --color-surface: #292929;  /* Graphite */
+            --color-text: #F4F0E8;     /* Warm Ivory */
+            --color-text-muted: #B7B1AA; 
+            --color-primary: #E87524;  /* Bright Ember */
+            --color-primary-hover: #FF965E; 
+            --color-accent: #E87524;   
+            --color-border: #393633;   /* Dark Border */
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: 'DM Sans', sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Manrope', sans-serif;
+        }
+
+        /* Fluid Typography using clamp */
+        .text-fluid-h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; }
+        .text-fluid-h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.2; }
+        .text-fluid-h3 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.3; }
+
+        /* Smooth Transitions */
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .dark .card-hover:hover {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Accordion transition */
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease;
+        }
+        .accordion-content.open {
+            grid-template-rows: 1fr;
+        }
+        .accordion-inner {
+            overflow: hidden;
+        }
+        
+        /* Filter Button Active State */
+        .filter-btn.active {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* Hide scrollbar for gallery filter if overflows */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Scroll Animation Effect */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animated Border for Flyer Promo */
+        @keyframes rotateBorder {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .animated-border-box {
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .animated-border-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, var(--color-primary), var(--color-accent), transparent 40%);
+            animation: rotateBorder 3s linear infinite;
+            z-index: 0;
+        }
+
+        .animated-border-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* ==========================================================
+           [BARU] 1. PAGE TRANSITION (tirai saat load & saat pindah section)
+           ========================================================== */
+        .pt-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            overflow: hidden;
+            pointer-events: all;
+            /* Pengaman: jika JavaScript gagal, tirai otomatis hilang setelah 8 detik */
+            animation: ptFailsafe 0.01s linear 8s forwards;
+        }
+        .pt-overlay.is-idle { visibility: hidden; pointer-events: none; }
+        @keyframes ptFailsafe { to { visibility: hidden; pointer-events: none; } }
+
+        .pt-panel { position: absolute; inset: 0; will-change: transform; }
+        .pt-panel--accent { background: var(--color-primary); }
+        .pt-panel--base {
+            background: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pt-brand { text-align: center; }
+        .pt-brand-mask { display: block; overflow: hidden; padding: 0.12em 0.1em; }
+        .pt-brand-text {
+            display: inline-block;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            letter-spacing: -0.02em;
+            color: #F4F0E8;
+            transform: translateY(115%);
+            animation: ptBrandIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+        .pt-brand-text em { font-style: normal; color: #E87524; }
+        @keyframes ptBrandIn { to { transform: translateY(0); } }
+        .pt-line {
+            display: block;
+            width: min(220px, 55vw);
+            height: 2px;
+            margin: 14px auto 0;
+            background: rgba(244, 240, 232, 0.15);
+            overflow: hidden;
+        }
+        .pt-line-fill {
+            display: block;
+            height: 100%;
+            background: #E87524;
+            transform: scaleX(0);
+            transform-origin: left center;
+            animation: ptLine 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+        }
+        @keyframes ptLine { to { transform: scaleX(1); } }
+
+        /* ==========================================================
+           [BARU] 2. EFEK MASKING TEKS (judul naik dari balik "topeng")
+           ========================================================== */
+        .tm-word {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top;
+            padding: 0.04em 0 0.16em;
+            margin: -0.04em 0 -0.16em;
+        }
+        .tm-inner {
+            display: inline-block;
+            transform: translateY(115%);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition-delay: var(--tm-d, 0ms);
+            will-change: transform;
+        }
+        .tm-revealed .tm-inner { transform: translateY(0); }
+
+        /* ==========================================================
+           [BARU] 3. IMAGE PARALLAX (gambar contoh website bergeser pelan saat scroll)
+           ========================================================== */
+        .parallax-on #portofolio-container img {
+            scale: 1.16;
+            will-change: translate;
+        }
+
+        /* ==========================================================
+           [BARU] 4. HERO IMAGE CAROUSEL
+           ========================================================== */
+        .hero-carousel { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+        .hero-slides { position: absolute; inset: 0; }
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            visibility: hidden;
+            background: #292929;
+        }
+        .hero-slide.is-active { visibility: visible; z-index: 1; }
+        .hero-slide.is-incoming { visibility: visible; z-index: 2; }
+        /* Gambar selalu pas memenuhi frame: tidak ditarik, tidak diperbesar, tidak dikecilkan */
+        .hero-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .hero-ui {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            color: #fff;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.38), transparent);
+            pointer-events: none;
+        }
+        .hero-ui[hidden] { display: none; }
+        .hero-ui > * { pointer-events: auto; }
+        .hero-counter {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700;
+            font-size: 0.8125rem;
+            letter-spacing: 0.08em;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .hero-counter-total { opacity: 0.6; }
+        .hero-progress {
+            flex: 1;
+            height: 2px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        .hero-progress-fill {
+            display: block;
+            height: 100%;
+            background: #fff;
+            transform: scaleX(0);
+            transform-origin: left center;
+        }
+        .hero-progress-fill.is-running {
+            animation: heroProgress var(--hero-interval, 5000ms) linear forwards;
+        }
+        .hero-ui.is-paused .hero-progress-fill { animation-play-state: paused; }
+        @keyframes heroProgress { to { transform: scaleX(1); } }
+        .hero-nav { display: flex; gap: 0.5rem; }
+        .hero-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.125rem;
+            background: rgba(17, 17, 17, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+        }
+        .hero-btn:hover { background: var(--color-primary); border-color: var(--color-primary); }
+        .hero-btn:active { transform: scale(0.94); }
+        .hero-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+        /* Hormati pengguna yang mematikan animasi di perangkatnya */
+        @media (prefers-reduced-motion: reduce) {
+            .pt-overlay { display: none; }
+            .tm-inner { transition: none; transform: none; }
+        }
+    </style>
+    <noscript><style>.pt-overlay { display: none !important; }</style></noscript>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- [BARU] PAGE TRANSITION OVERLAY (tirai saat halaman dibuka & saat berpindah section) -->
+    <div id="page-transition" class="pt-overlay" aria-hidden="true">
+        <div class="pt-panel pt-panel--accent"></div>
+        <div class="pt-panel pt-panel--base">
+            <div class="pt-brand">
+                <span class="pt-brand-mask"><span class="pt-brand-text">Web<em>Flow</em></span></span>
+                <span class="pt-line"><span class="pt-line-fill"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         PROMO FLYER POPUP (4:5 ASPECT RATIO)
+         ========================================== -->
+    <div id="promo-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <!-- Container Flyer 4:5 dengan Animated Border -->
+        <div class="relative w-full max-w-[360px] sm:max-w-[400px] aspect-[4/5] rounded-3xl animated-border-box shadow-2xl transform scale-95 transition-transform duration-300" id="promo-modal-card">
+            <div class="animated-border-content bg-surface rounded-[21px] p-6 flex flex-col justify-between text-center relative overflow-hidden">
+                <!-- Tombol Close Modal -->
+                <button onclick="closePromoModal()" class="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/40 text-white hover:bg-black/70 flex items-center justify-center transition-colors">
+                    <i class="ph ph-x text-lg"></i>
+                </button>
+
+                <!-- Ambient Glow Dekoratif -->
+                <div class="absolute -top-12 -left-12 w-32 h-32 bg-primary/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-accent/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <!-- Konten Flyer Promo -->
+                <div class="flex flex-col items-center justify-center my-auto z-10">
+                    <span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wider mb-3 inline-block">
+                        PROMO TERBATAS 🎉
+                    </span>
+                    
+                    <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-content leading-tight mb-2">
+                        DISKON <span class="text-primary">50%</span> PEMBUATAN WEBSITE
+                    </h2>
+                    
+                    <p class="text-xs sm:text-sm text-muted mb-5 max-w-[90%]">
+                        Dapatkan website profesional lengkap & tampilan modern!
+                    </p>
+
+                    <!-- Card Highlight Harga Promo -->
+                    <div class="bg-bg border border-border p-3.5 rounded-2xl w-full mb-5 text-center">
+                        <p class="text-xs text-muted mb-0.5">Mulai Dari</p>
+                        <div class="flex items-center justify-center gap-2">
+                            <span class="text-xs text-muted line-through">Rp 300.000</span>
+                            <span class="text-xl sm:text-2xl font-heading font-extrabold text-primary">Rp 150.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="z-10 w-full">
+                    <button onclick="handleWhatsApp('Claim Promo Flyer', 'Halo, saya ingin klaim Diskon Promo 30% pembuatan website!'); closePromoModal();" class="w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                        <i class="ph ph-whatsapp-logo text-xl"></i> Klaim Promo Sekarang
+                    </button>
+                    <button onclick="closePromoModal()" class="mt-2.5 text-xs text-muted hover:text-content transition-colors">
+                        Nanti Saja
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         NAVIGATION
+         ========================================== -->
+    <header class="sticky top-0 z-50 bg-bg/90 backdrop-blur-md border-b border-border transition-colors duration-200">
+        <div class="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="font-heading font-extrabold text-2xl tracking-tight text-content flex items-center gap-1">
+                Web<span class="text-primary">Flow</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#beranda" class="text-content hover:text-primary transition-colors">Beranda</a>
+                <a href="#layanan" class="text-content hover:text-primary transition-colors">Layanan</a>
+                <a href="#contoh" class="text-content hover:text-primary transition-colors">Contoh Website</a>
+                <a href="#harga" class="text-content hover:text-primary transition-colors">Harga</a>
+                <a href="#faq" class="text-content hover:text-primary transition-colors">FAQ</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="hidden md:flex items-center gap-4">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="p-2 rounded-full border border-border text-content hover:bg-surface transition-colors" aria-label="Toggle Dark Mode">
+                    <i class="ph ph-moon text-xl" id="theme-icon"></i>
+                </button>
+                <button onclick="handleWhatsApp('Konsultasi Umum', 'Ingin tanya-tanya dulu')" class="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-full font-medium transition-colors h-[46px] flex items-center">
+                    Konsultasi Gratis
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <div class="flex items-center gap-4 md:hidden">
+                <button id="theme-toggle-mobile" class="p-2 rounded-full border border-border text-content hover:bg-surface transition-colors">
+                    <i class="ph ph-moon text-xl" id="theme-icon-mobile"></i>
+                </button>
+                <button id="mobile-menu-btn" class="p-2 text-content">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-0 w-full bg-surface border-b border-border shadow-lg p-6 flex flex-col gap-4 z-40">
+            <a href="#beranda" class="mobile-link text-lg font-medium text-content">Beranda</a>
+            <a href="#layanan" class="mobile-link text-lg font-medium text-content">Layanan</a>
+            <a href="#contoh" class="mobile-link text-lg font-medium text-content">Contoh Website</a>
+            <a href="#harga" class="mobile-link text-lg font-medium text-content">Harga</a>
+            <a href="#faq" class="mobile-link text-lg font-medium text-content">FAQ</a>
+            <button onclick="handleWhatsApp('Konsultasi Umum', 'Ingin tanya-tanya via mobile')" class="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-full font-medium transition-colors w-full mt-4">
+                Konsultasi Gratis
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- ==========================================
+             HERO SECTION
+             ========================================== -->
+        <section id="beranda" class="fade-in-section relative pt-20 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+            <div class="max-w-[1200px] mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="flex flex-col items-start z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-surface text-sm font-medium tracking-wide mb-6">
+                        <span class="w-2 h-2 rounded-full bg-primary"></span>
+                        WEBFLOW — WEBSITE DESIGN SERVICE
+                    </div>
+                    <h1 class="text-fluid-h1 font-heading font-extrabold text-content mb-6" id="hero-title">
+                        Website Profesional untuk Membuat Bisnis Lebih Meyakinkan.
+                    </h1>
+                    <p class="text-lg text-muted mb-8 max-w-[90%]" id="hero-desc">
+                        Punya bisnis yang ingin terlihat lebih profesional di internet? WebFlow membantu Anda membangun website yang modern, responsif, dan sesuai kebutuhan bisnis, tanpa proses yang membingungkan.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-10">
+                        <a href="#harga" class="bg-primary hover:bg-primary-hover text-white px-8 py-3.5 rounded-full font-medium transition-colors text-center flex items-center justify-center h-[52px]">
+                            Lihat Paket Website
+                        </a>
+                        <button onclick="handleWhatsApp('Konsultasi Hero', 'Konsultasi pembuatan website')" class="border border-border bg-surface hover:border-primary text-content px-8 py-3.5 rounded-full font-medium transition-colors flex items-center justify-center gap-2 h-[52px]">
+                            <i class="ph ph-whatsapp-logo text-xl text-primary"></i> Konsultasi via WhatsApp
+                        </button>
+                    </div>
+
+                    <ul class="flex flex-col gap-3">
+                        <li class="flex items-center gap-3 text-content font-medium">
+                            <i class="ph-fill ph-check-circle text-primary text-xl"></i> Desain modern dan responsif.
+                        </li>
+                        <li class="flex items-center gap-3 text-content font-medium">
+                            <i class="ph-fill ph-check-circle text-primary text-xl"></i> Proses yang jelas dan terarah.
+                        </li>
+                        <li class="flex items-center gap-3 text-content font-medium">
+                            <i class="ph-fill ph-check-circle text-primary text-xl"></i> Paket yang bisa disesuaikan kebutuhan.
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Visual / Mockup -->
+                <div class="relative w-full h-[400px] md:h-[600px] rounded-3xl overflow-hidden border border-border bg-[#292929] flex items-center justify-center shadow-2xl z-10 group">
+                    <!-- Subtle ambient light -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-black/20 via-transparent to-primary/20 pointer-events-none"></div>
+                    <!-- [BARU] Hero Image Carousel. Daftar gambar diatur lewat HERO_IMAGES di bagian konfigurasi JavaScript -->
+                    <div id="hero-carousel" class="hero-carousel" role="region" aria-roledescription="carousel" aria-label="Contoh Desain Website">
+                        <div id="hero-slides" class="hero-slides" aria-live="off"></div>
+                    </div>
+                    <div id="hero-carousel-ui" class="hero-ui" hidden>
+                        <div class="hero-counter"><span id="hero-cur">01</span> <span class="hero-counter-total">/ <span id="hero-total">01</span></span></div>
+                        <div class="hero-progress" aria-hidden="true"><span id="hero-progress-fill" class="hero-progress-fill"></span></div>
+                        <div class="hero-nav">
+                            <button type="button" id="hero-prev" class="hero-btn" aria-label="Gambar sebelumnya"><i class="ph ph-arrow-left"></i></button>
+                            <button type="button" id="hero-next" class="hero-btn" aria-label="Gambar berikutnya"><i class="ph ph-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Abstract background shape -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -z-10"></div>
+        </section>
+
+        <!-- ==========================================
+             TRUST SECTION
+             ========================================== -->
+        <section class="fade-in-section py-12 bg-surface border-y border-border">
+            <div class="max-w-[1200px] mx-auto px-6">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-heading font-bold text-content">Website Dibuat dengan Tujuan yang Jelas.</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Trust 1 -->
+                    <div class="text-center flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-2xl bg-bg border border-border flex items-center justify-center mb-4 text-primary">
+                            <i class="ph ph-paint-brush text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">DESIGN THAT FITS</h3>
+                        <p class="text-muted text-sm px-4">Desain menyesuaikan karakter dan kebutuhan bisnis Anda.</p>
+                    </div>
+                    <!-- Trust 2 -->
+                    <div class="text-center flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-2xl bg-bg border border-border flex items-center justify-center mb-4 text-primary">
+                            <i class="ph ph-kanban text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">SIMPLE PROCESS</h3>
+                        <p class="text-muted text-sm px-4">Alur kerja mudah dipahami, dari konsultasi hingga website siap diperiksa.</p>
+                    </div>
+                    <!-- Trust 3 -->
+                    <div class="text-center flex flex-col items-center">
+                        <div class="w-14 h-14 rounded-2xl bg-bg border border-border flex items-center justify-center mb-4 text-primary">
+                            <i class="ph ph-device-mobile text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">MOBILE FRIENDLY</h3>
+                        <p class="text-muted text-sm px-4">Website dirancang agar nyaman digunakan pada layar smartphone, tablet, dan desktop.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SERVICES SECTION
+             ========================================== -->
+        <section id="layanan" class="fade-in-section py-24">
+            <div class="max-w-[1200px] mx-auto px-6">
+                <div class="max-w-2xl mb-16">
+                    <h2 class="text-fluid-h2 font-heading font-bold text-content mb-4">Solusi Website untuk Kebutuhan Anda.</h2>
+                    <p class="text-lg text-muted">Pilih jenis website sesuai tujuan bisnis.</p>
+                </div>
+                
+                <!-- Services Grid (Rendered by JS) -->
+                <div id="services-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SHOWCASE SECTION
+             ========================================== -->
+        <section id="contoh" class="fade-in-section py-24 bg-surface border-y border-border">
+            <div class="max-w-[1200px] mx-auto px-6">
+                <div class="max-w-2xl mb-12">
+                    <h2 class="text-fluid-h2 font-heading font-bold text-content mb-4">Temukan Gaya Website yang Cocok untuk Bisnis Anda.</h2>
+                    <p class="text-lg text-muted">Lihat inspirasi desain website dari berbagai kategori dan bayangkan bagaimana bisnis Anda dapat tampil secara online.</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex items-center gap-3 overflow-x-auto pb-4 mb-8 no-scrollbar" id="portofolio-filters">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Portofolio Grid (Rendered by JS) -->
+                <div id="portofolio-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Cards injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             HOW IT WORKS SECTION
+             ========================================== -->
+        <section class="fade-in-section py-24">
+            <div class="max-w-[1000px] mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-fluid-h2 font-heading font-bold text-content">Proses Kerja yang Mudah Dipahami.</h2>
+                </div>
+
+                <div class="grid gap-6 md:gap-0 relative">
+                    <!-- Vertical Line (Desktop only) -->
+                    <div class="hidden md:block absolute left-[28px] top-6 bottom-6 w-0.5 bg-border z-0"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative flex gap-6 md:gap-10 items-start md:mb-12 group">
+                        <div class="w-14 h-14 shrink-0 rounded-full bg-surface border-2 border-border flex items-center justify-center font-heading font-bold text-xl text-primary z-10 group-hover:border-primary transition-colors">01</div>
+                        <div class="pt-3">
+                            <h3 class="text-xl font-bold mb-2">Konsultasi</h3>
+                            <p class="text-muted">Ceritakan kebutuhan, jenis bisnis, dan tujuan website Anda kepada kami.</p>
+                        </div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="relative flex gap-6 md:gap-10 items-start md:mb-12 group">
+                        <div class="w-14 h-14 shrink-0 rounded-full bg-surface border-2 border-border flex items-center justify-center font-heading font-bold text-xl text-primary z-10 group-hover:border-primary transition-colors">02</div>
+                        <div class="pt-3">
+                            <h3 class="text-xl font-bold mb-2">Penawaran</h3>
+                            <p class="text-muted">Kami membantu memilih paket, menyepakati fitur, harga, dan estimasi waktu.</p>
+                        </div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="relative flex gap-6 md:gap-10 items-start md:mb-12 group">
+                        <div class="w-14 h-14 shrink-0 rounded-full bg-surface border-2 border-border flex items-center justify-center font-heading font-bold text-xl text-primary z-10 group-hover:border-primary transition-colors">03</div>
+                        <div class="pt-3">
+                            <h3 class="text-xl font-bold mb-2">Desain & Pengerjaan</h3>
+                            <p class="text-muted">Website dibuat berdasarkan materi dan ruang lingkup yang disepakati bersama.</p>
+                        </div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="relative flex gap-6 md:gap-10 items-start md:mb-12 group">
+                        <div class="w-14 h-14 shrink-0 rounded-full bg-surface border-2 border-border flex items-center justify-center font-heading font-bold text-xl text-primary z-10 group-hover:border-primary transition-colors">04</div>
+                        <div class="pt-3">
+                            <h3 class="text-xl font-bold mb-2">Review & Revisi</h3>
+                            <p class="text-muted">Anda memeriksa hasil website dan memberikan masukan sesuai batas revisi paket.</p>
+                        </div>
+                    </div>
+                    <!-- Step 5 -->
+                    <div class="relative flex gap-6 md:gap-10 items-start group">
+                        <div class="w-14 h-14 shrink-0 rounded-full bg-primary border-2 border-primary flex items-center justify-center font-heading font-bold text-xl text-white z-10 shadow-lg shadow-primary/30">05</div>
+                        <div class="pt-3">
+                            <h3 class="text-xl font-bold mb-2">Penyerahan</h3>
+                            <p class="text-muted">Website diserahkan setelah pemeriksaan dan penyelesaian administrasi sesuai kesepakatan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PRICING SECTION
+             ========================================== -->
+        <section id="harga" class="fade-in-section py-24 bg-surface border-y border-border">
+            <div class="max-w-[1200px] mx-auto px-6">
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <h2 class="text-fluid-h2 font-heading font-bold text-content mb-4">Pilih Paket Website Sesuai Kebutuhan.</h2>
+                    <p class="text-lg text-muted">Mulai dari website sederhana hingga tampilan bisnis yang lebih lengkap (Diurutkan dari harga termurah ke tertinggi). Biaya transparan dan ruang lingkup pekerjaan dijelaskan sebelum proyek dimulai.</p>
+                </div>
+
+                <!-- Pricing Cards (Rendered by JS) -->
+                <div id="pricing-container" class="grid lg:grid-cols-3 gap-8 items-start">
+                    <!-- Cards injected here -->
+                </div>
+                
+                <p class="text-center text-sm text-muted mt-10">
+                    * Harga belum termasuk biaya pendaftaran domain & hosting (kecuali dinyatakan lain pada penawaran final).
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             FAQ SECTION
+             ========================================== -->
+        <section id="faq" class="fade-in-section py-24">
+            <div class="max-w-[800px] mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-fluid-h2 font-heading font-bold text-content">Pertanyaan yang Sering Diajukan</h2>
+                </div>
+                
+                <!-- FAQ Accordion (Rendered by JS) -->
+                <div id="faq-container" class="flex flex-col gap-4">
+                    <!-- Accordions injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             FINAL CTA SECTION
+             ========================================== -->
+        <section class="fade-in-section py-24 bg-[#111111] text-[#F4F0E8] relative overflow-hidden">
+            <div class="max-w-[800px] mx-auto px-6 text-center relative z-10">
+                <h2 class="text-fluid-h2 font-heading font-bold mb-6">Siap Membawa Bisnis Anda ke Level Berikutnya?</h2>
+                <p class="text-lg text-[#B7B1AA] mb-10 max-w-2xl mx-auto">
+                    Ceritakan ide Anda. Mari mulai dengan website yang sesuai kebutuhan, anggaran, dan tujuan bisnis Anda.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="handleWhatsApp('Konsultasi Final', 'Mari diskusi proyek website')" class="bg-[#C65D32] hover:bg-[#A94A27] text-white px-8 py-3.5 rounded-full font-medium transition-colors flex items-center justify-center gap-2 h-[52px]">
+                        <i class="ph ph-whatsapp-logo text-xl"></i> Konsultasi via WhatsApp
+                    </button>
+                    <a href="#harga" class="border border-[#393633] bg-[#292929] hover:border-[#E87524] text-[#F4F0E8] px-8 py-3.5 rounded-full font-medium transition-colors flex items-center justify-center h-[52px]">
+                        Lihat Paket Website
+                    </a>
+                </div>
+            </div>
+            <!-- Decorative elements -->
+            <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-[#C65D32]/20 rounded-full blur-[100px] -z-0 translate-x-1/3 -translate-y-1/3"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#E87524]/10 rounded-full blur-[100px] -z-0 -translate-x-1/3 translate-y-1/3"></div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="fade-in-section bg-surface py-12 border-t border-border">
+        <div class="max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <a href="#" class="font-heading font-extrabold text-2xl tracking-tight text-content flex items-center gap-1 justify-center md:justify-start mb-2">
+                    Web<span class="text-primary">Flow</span>
+                </a>
+                <p class="text-muted text-sm mb-3">Website Profesional, Bisnis Lebih Meyakinkan.</p>
+                <!-- Instagram & Email Link Added -->
+                <div class="flex items-center justify-center md:justify-start gap-4 text-sm text-content">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                        <i class="ph ph-instagram-logo text-lg text-primary"></i> Instagram
+                    </a>
+                    <span class="text-border">|</span>
+                    <a href="mailto:info@webflow.com" class="flex items-center gap-1.5 hover:text-primary transition-colors">
+                        <i class="ph ph-envelope text-lg text-primary"></i> Email Kami
+                    </a>
+                </div>
+            </div>
+            
+            <nav class="flex flex-wrap justify-center gap-6 text-sm font-medium">
+                <a href="#beranda" class="text-content hover:text-primary transition-colors">Beranda</a>
+                <a href="#layanan" class="text-content hover:text-primary transition-colors">Layanan</a>
+                <a href="#contoh" class="text-content hover:text-primary transition-colors">Contoh Website</a>
+                <a href="#harga" class="text-content hover:text-primary transition-colors">Harga</a>
+                <a href="#faq" class="text-content hover:text-primary transition-colors">FAQ</a>
+            </nav>
+        </div>
+        <div class="max-w-[1200px] mx-auto px-6 mt-10 pt-6 border-t border-border text-center md:flex md:justify-between md:items-center">
+            <p class="text-muted text-sm" id="copyright-text"></p>
+            <p class="text-muted text-sm mt-2 md:mt-0">Didesain Dengan <i class="ph-fill ph-heart text-primary"></i> Untuk Bisnis Kalian.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT / CONFIGURATION / DATA
+         ========================================== -->
+    <script>
+        /**
+         * ==========================================
+         * 1. CONFIGURATION & DATA (MUDAH DIEDIT)
+         * ==========================================
+         */
+        
+        const SITE_CONFIG = {
+            brandName: "WebFlow",
+            tagline: "Website Profesional, Bisnis Lebih Meyakinkan.",
+            whatsappNumber: "628998951070", 
+            email: "info@webflow.com",
+            instagram: "webflow.id",
+            currency: "Rp",
+            themeDefault: "light"
+        };
+
+        // [BARU] DAFTAR GAMBAR HERO (CAROUSEL OTOMATIS)
+        // Tambahkan gambar sebanyak apa pun, tanpa batas maksimal: cukup tambah satu baris baru di bawah ini.
+        // Format: { src: "URL gambar", alt: "Deskripsi gambar" }  (atau cukup tulis URL-nya saja dalam tanda kutip).
+        // Setiap gambar otomatis menyesuaikan frame Hero (ukuran frame tetap, gambar tidak diperbesar/dikecilkan).
+        // Baris ke-2 s.d. ke-4 hanyalah contoh agar carousel langsung terlihat berjalan; hapus atau ganti sesuai kebutuhan.
+        const HERO_IMAGES = [
+            { src: "https://i.imgur.com/v9rJm3V.jpeg", alt: "1" },
+            { src: "https://i.imgur.com/nv79mqQ.jpeg", alt: "2" },
+            { src: "https://i.imgur.com/Z0msZKc.jpeg", alt: "3" },
+            { src: "https://i.imgur.com/ABA0UKp.jpeg", alt: "4" }
+        ];
+
+        const HERO_CAROUSEL_CONFIG = {
+            interval: 5000,   // lama tiap gambar tampil (milidetik)
+            duration: 1300    // durasi efek transisi antar gambar (milidetik)
+        };
+
+        // Tambahkan URL gambar pada properti imageUrl untuk menggunakan icon berbasis gambar.
+        // Jika imageUrl diisi (tidak null/kosong), sistem akan menggunakan gambar tersebut.
+        // Jika imageUrl kosong atau null, sistem akan memakai class icon Phosphor (opsi cadangan).
+        const SERVICES = [
+            {
+                id: "landing-page",
+                imageUrl: "https://i.imgur.com/85MDAWi.png", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-layout",
+                title: "Landing Page",
+                description: "Website satu halaman untuk memperkenalkan produk, jasa, promosi, atau campaign.",
+                features: ["Satu halaman fokus konversi", "Call-to-Action yang kuat", "Desain ringkas & memikat"],
+                categoryFilter: "Landing Page",
+                difficulty: 1
+            },
+            {
+                id: "personal-portofolio",
+                imageUrl: "https://i.imgur.com/XvbDqDV.jpeg", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-user-circle",
+                title: "Personal Portofolio",
+                description: "Website untuk desainer, freelancer, kreator, dan profesional yang ingin menampilkan karya.",
+                features: ["Galeri karya dinamis", "Profil kreatif", "Tampilan unik & personal"],
+                categoryFilter: "Portofolio",
+                difficulty: 2
+            },
+            {
+                id: "website-umkm",
+                imageUrl: "https://i.imgur.com/cmS0lPU.jpeg", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-storefront",
+                title: "Bisnis & UMKM",
+                description: "Website untuk membantu bisnis lokal tampil lebih profesional dan mudah ditemukan secara online.",
+                features: ["Profil bisnis lokal", "Integrasi Google Maps", "Tombol chat instan"],
+                categoryFilter: "Bisnis & UMKM",
+                difficulty: 3
+            },
+            {
+                id: "company-profile",
+                imageUrl: "https://i.imgur.com/fDL0XQG.jpeg", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-buildings",
+                title: "Company Profile",
+                description: "Website untuk memperkenalkan bisnis, layanan, profil perusahaan, dan informasi kontak.",
+                features: ["Struktur halaman lengkap", "Desain formal & profesional", "Formulir kontak terintegrasi"],
+                categoryFilter: "Company Profile",
+                difficulty: 4
+            },
+            {
+                id: "resto-adn-cafe",
+                imageUrl: "https://i.imgur.com/KRvPxtr.jpeg", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-coffee",
+                title: "Resto & Cafe",
+                description: "Website dengan informasi menu, galeri, lokasi, jam operasional, dan tombol reservasi.",
+                features: ["Buku menu digital", "Sistem reservasi sederhana", "Galeri suasana tempat"],
+                categoryFilter: "Kuliner",
+                difficulty: 5
+            },
+            {
+                id: "Online Store",
+                imageUrl: "https://i.imgur.com/TjJXKcp.jpeg", // Ganti dengan URL gambar/icon Anda
+                icon: "ph-shopping-bag",
+                title: "Online Store",
+                description: "Website untuk menampilkan daftar produk, foto, deskripsi, kategori, dan tombol pemesanan.",
+                features: ["Galeri produk tertata", "Kategori & pencarian", "Pemesanan via WhatsApp"],
+                categoryFilter: "Toko Online",
+                difficulty: 6
+            }
+        ];
+
+        const PORTOFOLIOS = [
+            {
+                id: "demo-1",
+                title: "Landing Page",
+                category: "Landing Page",
+                description: "Konsep website promosi dengan headline kuat, layanan, keunggulan, dan CTA.",
+                image: "https://i.imgur.com/o4ZzQ66.png",
+                demoUrl: "https://storyrezz.github.io/demolandingpage1/"
+            },
+            {
+                id: "demo-4",
+                title: "Portofolio",
+                category: "Portofolio",
+                description: "Konsep portofolio kreatif dengan profil, keahlian, galeri karya, dan kontak.",
+                image: "https://i.imgur.com/0CuHVtL.png",
+                demoUrl: "https://rezzfhlvi.my.id/"
+            },
+            {
+                id: "demo-6",
+                title: "Bisnis & UMKM",
+                category: "Bisnis & UMKM",
+                description: "Konsep website katalog untuk bisnis produk lokal dengan informasi produk dan jalur pemesanan.",
+                image: "https://i.imgur.com/abAcVhu.png",
+                demoUrl: "https://storyrezz.github.io/demoUMKM1/"
+            },
+            {
+                id: "demo-5",
+                title: "Company Profile",
+                category: "Company Profile",
+                description: "Konsep website layanan profesional dengan daftar layanan, profil usaha, dan formulir kontak.",
+                image: "https://i.imgur.com/oXI2KBd.png",
+                demoUrl: "https://storyrezz.github.io/democompanyprofile1/"
+            },
+            {
+                id: "demo-2",
+                title: "Resto & Cafe",
+                category: "Kuliner",
+                description: "Konsep website kafe dengan menu, suasana tempat, informasi lokasi, dan tombol reservasi.",
+                image: "https://i.imgur.com/AXtDdc6.png",
+                demoUrl: "https://storyrezz.github.io/demoresto-cafe1/"
+            },
+            {
+                id: "demo-3",
+                title: "Clothing Store",
+                category: "Toko Online",
+                description: "Konsep katalog produk fashion dengan kategori, foto produk, harga, dan tombol pemesanan.",
+                image: "https://i.imgur.com/7HdYkUs.png",
+                demoUrl: "https://nutsyjakarta.github.io/shop/"
+            }
+        ];
+
+        const PACKAGES = [
+            {
+                id: "starter",
+                name: "Starter",
+                regularPrice: 300000,
+                promoPrice: 150000,
+                description: "Pilihan praktis untuk personal brand, promosi jasa, atau bisnis kecil yang membutuhkan halaman website profesional.",
+                features: [
+                    "1 halaman landing page",
+                    "Desain responsif (Mobile Friendly)",
+                    "Bagian profil / pengenalan bisnis",
+                    "Bagian layanan / produk",
+                    "Tombol WhatsApp terintegrasi",
+                    "Formulir kontak (opsional)",
+                    "SEO on-page dasar",
+                    "1 kali revisi minor"
+                ],
+                badge: "UNTUK PEMULA",
+                isRecommended: false,
+                isCustom: false,
+                ctaText: "Pilih Paket Starter"
+            },
+            {
+                id: "business",
+                name: "Business",
+                regularPrice: 750000,
+                promoPrice: 550000,
+                description: "Website dengan struktur lebih lengkap untuk bisnis yang membutuhkan informasi layanan, profil, galeri, dan kontak yang tertata.",
+                features: [
+                    "Hingga 5 halaman sederhana",
+                    "Desain responsif (Mobile Friendly)",
+                    "Halaman Beranda & Profil",
+                    "Halaman Layanan / Produk",
+                    "Galeri atau Portofolio",
+                    "Integrasi WhatsApp",
+                    "SEO on-page dasar",
+                    "2 kali revisi minor"
+                ],
+                badge: "PALING DIREKOMENDASIKAN",
+                isRecommended: true,
+                isCustom: false,
+                ctaText: "Pilih Paket Business"
+            },
+            {
+                id: "custom",
+                name: "Custom",
+                regularPrice: 1500000,
+                promoPrice: 1000000,
+                description: "Solusi untuk bisnis yang memerlukan desain khusus, struktur halaman tambahan, atau fitur sesuai kebutuhan proyek.",
+                features: [
+                    "Konsultasi kebutuhan komprehensif",
+                    "Desain yang disesuaikan secara khusus",
+                    "Jumlah halaman berdasarkan kesepakatan",
+                    "Fitur tambahan sesuai ruang lingkup",
+                    "Integrasi khusus yang memungkinkan",
+                    "Pengujian fungsionalitas",
+                    "Estimasi biaya & waktu berdasarkan scope"
+                ],
+                badge: "SESUAI KEBUTUHAN",
+                isRecommended: true,
+                isCustom: false,
+                ctaText: "Konsultasikan Paket Custom"
+            }
+        ];
+
+        const FAQS = [
+            {
+                q: "Berapa biaya pembuatan website?",
+                a: "Harga dimulai dari paket Starter. Biaya akhir bergantung pada jumlah halaman, fitur, materi, dan kebutuhan spesifik bisnis Anda."
+            },
+            {
+                q: "Apakah website bisa dibuka melalui HP?",
+                a: "Ya. Semua website yang kami buat dirancang agar responsif dan tampil sempurna di smartphone, tablet, maupun desktop."
+            },
+            {
+                q: "Apakah saya perlu membeli domain dan hosting?",
+                a: "Tergantung paket dan platform yang disepakati. Biaya pihak ketiga seperti domain dan hosting akan selalu dijelaskan secara transparan sebelum pengerjaan dimulai."
+            },
+            {
+                q: "Apakah website bisa terhubung ke WhatsApp?",
+                a: "Ya, kami dapat menambahkan tautan klik-langsung ke WhatsApp. Untuk fitur pemesanan otomatis kompleks, mungkin memerlukan evaluasi dan paket khusus."
+            },
+            {
+                q: "Apakah saya bisa meminta desain sendiri?",
+                a: "Tentu bisa. Silakan kumpulkan referensi visual yang Anda sukai, dan kita akan membahasnya pada tahap konsultasi sebelum desain dieksecusi."
+            },
+            {
+                q: "Berapa lama pengerjaan website?",
+                a: "Estimasi waktu pengerjaan bervariasi. Umumnya berkisar antara beberapa hari hingga beberapa minggu, bergantung pada kelengkapan materi dari Anda dan fitur yang disepakati."
+            },
+            {
+                q: "Apakah ada batas revisi?",
+                a: "Ya, jumlah revisi menyesuaikan dengan ketentuan pada paket yang Anda pilih. Fokus revisi adalah penyesuaian minor, bukan perubahan konsep total setelah desain disepakati."
+            },
+            {
+                q: "Bagaimana cara memesannya?",
+                a: "Cukup klik tombol WhatsApp pada website ini, beritahu kami jenis bisnis Anda dan paket yang diminati. Kami akan memandu langkah selanjutnya!"
+            }
+        ];
+
+
+        /**
+         * ==========================================
+         * 2. LOGIC & RENDERING FUNCTIONS
+         * ==========================================
+         */
+
+        const formatRupiah = (number) => {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(number);
+        };
+
+        // Modal Promo Logic
+        window.openPromoModal = function() {
+            const modal = document.getElementById('promo-modal');
+            const card = document.getElementById('promo-modal-card');
+            if(modal && card) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100');
+                card.classList.remove('scale-95');
+                card.classList.add('scale-100');
+            }
+        };
+
+        window.closePromoModal = function() {
+            const modal = document.getElementById('promo-modal');
+            const card = document.getElementById('promo-modal-card');
+            if(modal && card) {
+                modal.classList.remove('opacity-100');
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                card.classList.remove('scale-100');
+                card.classList.add('scale-95');
+            }
+        };
+
+        function renderServices() {
+            const container = document.getElementById("services-container");
+            let html = "";
+
+            SERVICES.forEach(service => {
+                const featuresHtml = service.features.map(feat => 
+                    `<li class="flex items-start gap-2 text-sm text-muted mb-2">
+                        <i class="ph-fill ph-check-circle text-primary mt-0.5"></i> ${feat}
+                    </li>`
+                ).join("");
+
+                // Pengecekan apakah menggunakan gambar (imageUrl) atau Phosphor icon (icon)
+                // Gambar kini dibuat w-full h-full object-cover agar memenuhi frame sepenuhnya
+                const iconContent = (service.imageUrl && service.imageUrl.trim() !== "") 
+                    ? `<img src="${service.imageUrl}" alt="${service.title}" class="w-full h-full object-cover" />` 
+                    : `<i class="${service.icon}"></i>`;
+
+                html += `
+                    <div class="bg-surface border border-border p-8 rounded-2xl card-hover flex flex-col h-full">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-bg border border-border flex items-center justify-center text-primary text-2xl shrink-0 overflow-hidden p-0">
+                                ${iconContent}
+                            </div>
+                            <div class="inline-flex items-center gap-1 bg-primary/10 text-primary text-xs font-bold px-2.5 py-1 rounded-md">
+                                <span class="font-extrabold">Web<span class="text-primary-hover">Flow</span></span>
+                            </div>
+                        </div>
+                        <h3 class="font-heading font-bold text-xl mb-3">${service.title}</h3>
+                        <p class="text-muted text-sm mb-6 flex-grow">${service.description}</p>
+                        <ul class="mb-8">
+                            ${featuresHtml}
+                        </ul>
+                        <div class="mt-auto grid grid-cols-2 gap-3">
+                            <button onclick="filterPortofolio('${service.categoryFilter}')" class="text-center text-sm font-medium border border-border rounded-lg py-2.5 hover:border-primary hover:text-primary transition-colors">
+                                Lihat Contoh
+                            </button>
+                            <button onclick="handleWhatsApp('Tanya Layanan', 'Tanya paket untuk website ${service.title}')" class="text-center text-sm font-medium bg-bg hover:bg-primary hover:text-white rounded-lg py-2.5 transition-colors">
+                                Tanyakan Paket
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Render Portofolio / Showcase
+        function renderPortofolio(filterCategory = "Semua") {
+            const container = document.getElementById("portofolio-container");
+            const filterContainer = document.getElementById("portofolio-filters");
+            
+            const categories = ["Semua", ...SERVICES.map(s => s.categoryFilter)];
+            let filtersHtml = "";
+            
+            categories.forEach(cat => {
+                const isActive = cat === filterCategory ? "active" : "border-border text-content hover:border-primary";
+                filtersHtml += `
+                    <button onclick="renderPortofolio('${cat}')" class="filter-btn px-5 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-colors ${isActive}">
+                        ${cat}
+                    </button>
+                `;
+            });
+            filterContainer.innerHTML = filtersHtml;
+
+            const filteredItems = filterCategory === "Semua" 
+                ? PORTOFOLIOS 
+                : PORTOFOLIOS.filter(p => p.category === filterCategory);
+                
+            let cardsHtml = "";
+            
+            if(filteredItems.length === 0) {
+                cardsHtml = `<div class="col-span-full text-center py-10 text-muted">Belum ada contoh website untuk kategori ini.</div>`;
+            } else {
+                filteredItems.forEach(item => {
+                    cardsHtml += `
+                        <div class="group rounded-2xl overflow-hidden border border-border bg-surface card-hover flex flex-col">
+                            <div class="relative h-56 overflow-hidden bg-bg">
+                                <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                                <div class="absolute top-3 right-3 bg-bg/90 backdrop-blur text-xs font-medium px-3 py-1 rounded-full border border-border shadow-sm">
+                                    Demo Konsep
+                                </div>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <div class="text-xs font-bold text-primary tracking-wider uppercase mb-2">${item.category}</div>
+                                <h3 class="font-heading font-bold text-lg mb-2">${item.title}</h3>
+                                <p class="text-sm text-muted mb-6 flex-grow">${item.description}</p>
+                                <div class="grid grid-cols-2 gap-3 mt-auto">
+                                    <a href="${item.demoUrl || '#'}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center text-center text-sm font-medium border border-border rounded-lg py-2.5 hover:bg-bg transition-colors">
+                                        Lihat Demo
+                                    </a>
+                                    <button onclick="handleWhatsApp('Pesan Konsep', 'Saya tertarik membuat website seperti konsep ${item.title}')" class="text-center text-sm font-medium bg-primary text-white rounded-lg py-2.5 hover:bg-primary-hover transition-colors">
+                                        Pilih Konsep Ini
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            container.innerHTML = cardsHtml;
+        }
+
+        window.filterPortofolio = function(cat) {
+            document.getElementById('contoh').scrollIntoView({behavior: 'smooth'});
+            renderPortofolio(cat);
+        }
+
+        function renderPricing() {
+            const container = document.getElementById("pricing-container");
+            let html = "";
+
+            PACKAGES.forEach(pkg => {
+                const isPromo = pkg.promoPrice && pkg.promoPrice < pkg.regularPrice;
+                const discountPercent = isPromo 
+                    ? Math.round(((pkg.regularPrice - pkg.promoPrice) / pkg.regularPrice) * 100) 
+                    : 0;
+
+                const featuresHtml = pkg.features.map(feat => 
+                    `<li class="flex items-start gap-3 text-sm mb-3">
+                        <i class="ph-fill ph-check-circle text-primary mt-0.5 text-lg"></i>
+                        <span class="text-content">${feat}</span>
+                    </li>`
+                ).join("");
+
+                const cardClass = pkg.isRecommended 
+                    ? "bg-surface border-2 border-primary rounded-2xl relative shadow-xl transform md:-translate-y-2 card-hover" 
+                    : "bg-bg border border-border rounded-2xl relative card-hover";
+                
+                const btnClass = pkg.isRecommended
+                    ? "w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-xl font-medium transition-colors"
+                    : "w-full border border-border bg-surface hover:border-primary text-content py-3.5 rounded-xl font-medium transition-colors";
+
+                let priceHtml = "";
+                if (pkg.isCustom) {
+                    priceHtml = `
+                        <div class="text-sm font-medium text-muted mb-1">Mulai dari</div>
+                        <div class="text-3xl font-heading font-bold mb-1">${formatRupiah(pkg.regularPrice)}</div>
+                    `;
+                } else if (isPromo) {
+                    priceHtml = `
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-sm font-medium text-muted line-through">${formatRupiah(pkg.regularPrice)}</span>
+                            <span class="bg-primary/10 text-primary text-xs font-bold px-2 py-0.5 rounded">HEMAT ${discountPercent}%</span>
+                        </div>
+                        <div class="text-3xl font-heading font-bold mb-1">${formatRupiah(pkg.promoPrice)}</div>
+                    `;
+                } else {
+                    priceHtml = `
+                        <div class="text-3xl font-heading font-bold mb-1 mt-6">${formatRupiah(pkg.regularPrice)}</div>
+                    `;
+                }
+
+                html += `
+                    <div class="${cardClass}">
+                        ${pkg.isRecommended ? `<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wider uppercase shadow-md">${pkg.badge}</div>` : ''}
+                        
+                        <div class="p-8">
+                            ${!pkg.isRecommended ? `<div class="text-xs font-bold text-primary tracking-wider uppercase mb-4">${pkg.badge}</div>` : '<div class="mt-4"></div>'}
+                            
+                            <h3 class="font-heading font-bold text-2xl mb-4">${pkg.name}</h3>
+                            <p class="text-sm text-muted mb-8 h-16">${pkg.description}</p>
+                            
+                            <div class="mb-8 border-b border-border pb-8">
+                                ${priceHtml}
+                            </div>
+                            
+                            <ul class="mb-8 flex-grow">
+                                ${featuresHtml}
+                            </ul>
+                            
+                            <button onclick="handleWhatsApp('Pilih Paket', 'Saya ingin memesan paket ${pkg.name}')" class="${btnClass}">
+                                ${pkg.ctaText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderFAQ() {
+            const container = document.getElementById("faq-container");
+            let html = "";
+
+            FAQS.forEach((faq, index) => {
+                html += `
+                    <div class="border border-border bg-surface rounded-xl overflow-hidden">
+                        <button class="faq-toggle w-full flex items-center justify-between p-6 text-left hover:bg-bg transition-colors focus:outline-none" aria-expanded="false" aria-controls="faq-content-${index}">
+                            <span class="font-bold pr-4">${faq.q}</span>
+                            <i class="ph ph-caret-down text-xl text-primary transition-transform duration-300 transform" id="faq-icon-${index}"></i>
+                        </button>
+                        <div class="accordion-content bg-bg" id="faq-content-${index}">
+                            <div class="accordion-inner">
+                                <p class="p-6 pt-0 text-muted leading-relaxed border-t border-border mt-2">${faq.a}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            const toggles = document.querySelectorAll('.faq-toggle');
+            toggles.forEach((toggle, i) => {
+                toggle.addEventListener('click', () => {
+                    const content = document.getElementById(`faq-content-${i}`);
+                    const icon = document.getElementById(`faq-icon-${i}`);
+                    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+
+                    if (isExpanded) {
+                        content.classList.remove('open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                        icon.classList.remove('rotate-180');
+                    } else {
+                        content.classList.add('open');
+                        toggle.setAttribute('aria-expanded', 'true');
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+        }
+
+        window.handleWhatsApp = function(context, defaultMessage = "") {
+            const num = SITE_CONFIG.whatsappNumber;
+            if(!num) {
+                alert("Nomor WhatsApp belum dikonfigurasi.");
+                return;
+            }
+
+            const template = `Halo ${SITE_CONFIG.brandName}, saya tertarik membuat website.
+
+Nama: 
+Jenis bisnis: 
+Paket/Kebutuhan: ${defaultMessage}
+
+Mohon informasi lebih lanjut mengenai proses, biaya, dan estimasi pengerjaan.`;
+
+            const encodedMessage = encodeURIComponent(template);
+            const waUrl = `https://wa.me/${num}?text=${encodedMessage}`;
+            window.open(waUrl, "_blank");
+        };
+
+        function initScrollAnimations() {
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        /**
+         * ==========================================
+         * 3. INITIALIZATION & THEME HANDLING
+         * ==========================================
+         */
+
+        function initTheme() {
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeIconMobile = document.getElementById('theme-icon-mobile');
+            const htmlClassList = document.documentElement.classList;
+
+            htmlClassList.remove('dark');
+            themeIcon.className = 'ph ph-moon text-xl';
+            themeIconMobile.className = 'ph ph-moon text-xl';
+
+            const switchTheme = () => {
+                if (htmlClassList.contains('dark')) {
+                    htmlClassList.remove('dark');
+                    themeIcon.classList.replace('ph-sun', 'ph-moon');
+                    themeIconMobile.classList.replace('ph-sun', 'ph-moon');
+                } else {
+                    htmlClassList.add('dark');
+                    themeIcon.classList.replace('ph-moon', 'ph-sun');
+                    themeIconMobile.classList.replace('ph-moon', 'ph-sun');
+                }
+            };
+
+            themeToggleBtn.addEventListener('click', switchTheme);
+            themeToggleMobileBtn.addEventListener('click', switchTheme);
+        }
+
+        function initMobileMenu() {
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const icon = menuBtn.querySelector('i');
+            const links = menu.querySelectorAll('.mobile-link');
+
+            const toggleMenu = () => {
+                menu.classList.toggle('hidden');
+                if(menu.classList.contains('hidden')) {
+                    icon.classList.replace('ph-x', 'ph-list');
+                } else {
+                    icon.classList.replace('ph-list', 'ph-x');
+                }
+            };
+
+            menuBtn.addEventListener('click', toggleMenu);
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                    icon.classList.replace('ph-x', 'ph-list');
+                });
+            });
+        }
+
+        function setCopyright() {
+            const year = new Date().getFullYear();
+            document.getElementById('copyright-text').innerHTML = `&copy; ${year} ${SITE_CONFIG.brandName}. All rights reserved.`;
+        }
+
+        // Initialize Everything & Force Lock Scroll Position to Top (0,0)
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initMobileMenu();
+            setCopyright();
+            
+            // Render components
+            renderServices();
+            renderPortofolio("Semua");
+            renderPricing();
+            renderFAQ();
+            
+            // Initialize Animation
+            initScrollAnimations();
+
+            // Tampilkan promo modal tanpa mengganggu posisi scroll
+            setTimeout(() => {
+                openPromoModal();
+            }, 300);
+        });
+
+        // Paksa scroll di posisi paling atas saat seluruh halaman/resource selesai di-load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
+        });
+    </script>
+
+    <!-- ==========================================
+         [BARU] ANIMASI: HERO CAROUSEL, PAGE TRANSITION, TEXT MASKING, IMAGE PARALLAX
+         (berdiri sendiri, tidak mengubah script di atas)
+         ========================================== -->
+    <script>
+    (function () {
+        'use strict';
+
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+        /**
+         * ------------------------------------------
+         * 1. HERO IMAGE CAROUSEL
+         * Gambar diatur lewat HERO_IMAGES (tanpa batas jumlah).
+         * Transisi: tirai menyapu dari sisi gambar + gambar bergeser dengan kecepatan berbeda
+         * (tanpa zoom, jadi gambar selalu pas dengan frame).
+         * ------------------------------------------
+         */
+        function initHeroCarousel() {
+            const root = document.getElementById('hero-carousel');
+            const track = document.getElementById('hero-slides');
+            const ui = document.getElementById('hero-carousel-ui');
+            const idle = { ready: Promise.resolve(), start() {} };
+            if (!root || !track || !ui) return idle;
+
+            const cfg = Object.assign(
+                { interval: 5000, duration: 1300 },
+                typeof HERO_CAROUSEL_CONFIG !== 'undefined' ? HERO_CAROUSEL_CONFIG : {}
+            );
+            const source = (typeof HERO_IMAGES !== 'undefined' && Array.isArray(HERO_IMAGES)) ? HERO_IMAGES : [];
+            const frame = root.parentElement;
+            const elCur = document.getElementById('hero-cur');
+            const elTotal = document.getElementById('hero-total');
+            const btnPrev = document.getElementById('hero-prev');
+            const btnNext = document.getElementById('hero-next');
+            const fill = document.getElementById('hero-progress-fill');
+            const EASE = 'cubic-bezier(0.77, 0, 0.175, 1)';
+            const pad = (n) => String(n).padStart(2, '0');
+
+            ui.style.setProperty('--hero-interval', cfg.interval + 'ms');
+
+            const slides = source
+                .map((it) => (typeof it === 'string' ? { src: it, alt: '' } : it))
+                .filter((it) => it && typeof it.src === 'string' && it.src.trim() !== '')
+                .map((it, i) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'hero-slide';
+                    const img = document.createElement('img');
+                    img.loading = i === 0 ? 'eager' : 'lazy';
+                    img.decoding = 'async';
+                    img.draggable = false;
+                    img.alt = it.alt || 'Contoh Desain Website';
+                    img.src = it.src.trim();
+                    slide.appendChild(img);
+                    track.appendChild(slide);
+                    return slide;
+                });
+
+            let cur = 0;
+            let busy = false;
+            let started = false;
+
+            function load(slide) {
+                const img = slide.querySelector('img');
+                img.loading = 'eager';
+                if (img.complete) return Promise.resolve(img.naturalWidth > 0);
+                return new Promise((resolve) => {
+                    const finish = (ok) => {
+                        clearTimeout(timer);
+                        img.removeEventListener('load', onLoad);
+                        img.removeEventListener('error', onError);
+                        resolve(ok);
+                    };
+                    const onLoad = () => finish(true);
+                    const onError = () => finish(false);
+                    const timer = setTimeout(() => finish(img.naturalWidth > 0), 10000);
+                    img.addEventListener('load', onLoad);
+                    img.addEventListener('error', onError);
+                });
+            }
+
+            function removeSlide(i) {
+                slides[i].remove();
+                slides.splice(i, 1);
+                if (i < cur) cur--;
+            }
+
+            function refreshUI() {
+                elCur.textContent = pad(cur + 1);
+                elTotal.textContent = pad(slides.length);
+                ui.hidden = slides.length < 2;
+            }
+
+            function warm() {
+                if (slides.length < 2) return;
+                slides[(cur + 1) % slides.length].querySelector('img').loading = 'eager';
+            }
+
+            function stopProgress() { fill.classList.remove('is-running'); }
+            function restartProgress() {
+                stopProgress();
+                if (!started || slides.length < 2) return;
+                void fill.offsetWidth; // paksa reflow agar animasi mulai dari awal
+                fill.classList.add('is-running');
+            }
+            // Selesainya bar progress = waktunya pindah ke gambar berikutnya (otomatis)
+            fill.addEventListener('animationend', () => advance(1));
+
+            async function advance(dir) {
+                if (busy || slides.length < 2) return;
+                busy = true;
+                stopProgress();
+
+                let n = cur;
+                let ok = false;
+                while (slides.length > 1) {
+                    n = (cur + dir + slides.length) % slides.length;
+                    ok = await load(slides[n]);
+                    if (ok) break;
+                    removeSlide(n); // gambar gagal dimuat (URL salah) dilewati otomatis
+                }
+                if (!ok) {
+                    busy = false;
+                    refreshUI();
+                    return;
+                }
+
+                const out = slides[cur];
+                const inn = slides[n];
+                const outImg = out.querySelector('img');
+                const inImg = inn.querySelector('img');
+                inn.classList.add('is-incoming');
+
+                let anims;
+                if (reduceMotion) {
+                    anims = [inn.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease', fill: 'both' })];
+                } else {
+                    const opt = { duration: cfg.duration, easing: EASE, fill: 'both' };
+                    anims = [
+                        inn.animate([
+                            { clipPath: dir > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' },
+                            { clipPath: 'inset(0 0 0 0)' }
+                        ], opt),
+                        inImg.animate([{ transform: 'translateX(' + (dir * 14) + '%)' }, { transform: 'translateX(0)' }], opt),
+                        outImg.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(' + (-dir * 22) + '%)' }], opt),
+                        out.animate([{ opacity: 1 }, { opacity: 0.4 }], opt)
+                    ];
+                }
+
+                try { await Promise.all(anims.map((a) => a.finished)); } catch (err) { /* dibatalkan */ }
+
+                out.classList.remove('is-active');
+                inn.classList.remove('is-incoming');
+                inn.classList.add('is-active');
+                anims.forEach((a) => { try { a.cancel(); } catch (err) {} });
+
+                cur = n;
+                busy = false;
+                refreshUI();
+                warm();
+                restartProgress();
+            }
+
+            btnPrev.addEventListener('click', () => advance(-1));
+            btnNext.addEventListener('click', () => advance(1));
+
+            // Geser (swipe) di layar sentuh / drag mouse
+            frame.style.touchAction = 'pan-y';
+            let sx = null;
+            let sy = null;
+            frame.addEventListener('pointerdown', (e) => {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                sx = e.clientX;
+                sy = e.clientY;
+            });
+            frame.addEventListener('pointerup', (e) => {
+                if (sx === null) return;
+                const dx = e.clientX - sx;
+                const dy = e.clientY - sy;
+                sx = null;
+                if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) advance(dx < 0 ? 1 : -1);
+            });
+            frame.addEventListener('pointercancel', () => { sx = null; });
+
+            // Jeda otomatis: saat kursor di atas gambar, tombol difokus keyboard, tab tidak aktif, atau Hero tidak terlihat
+            const pauses = new Set();
+            const setPause = (key, on) => {
+                if (on) pauses.add(key); else pauses.delete(key);
+                ui.classList.toggle('is-paused', pauses.size > 0);
+            };
+            frame.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') setPause('hover', true); });
+            frame.addEventListener('pointerleave', () => setPause('hover', false));
+            ui.addEventListener('focusin', (e) => {
+                let visible = false;
+                try { visible = e.target.matches(':focus-visible'); } catch (err) {}
+                if (visible) setPause('focus', true);
+            });
+            ui.addEventListener('focusout', () => setPause('focus', false));
+            document.addEventListener('visibilitychange', () => setPause('hidden', document.hidden));
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver((entries) => {
+                    setPause('offscreen', !entries[0].isIntersecting);
+                }, { threshold: 0.25 }).observe(frame);
+            }
+
+            const ready = (async () => {
+                while (slides.length) {
+                    if (await load(slides[0])) break;
+                    removeSlide(0);
+                }
+                if (!slides.length) { ui.hidden = true; return; }
+                cur = 0;
+                slides[0].classList.add('is-active');
+                if (!reduceMotion) slides[0].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease-out' });
+                refreshUI();
+                warm();
+            })();
+
+            return {
+                ready,
+                start() {
+                    ready.then(() => { started = true; restartProgress(); });
+                }
+            };
+        }
+
+        /**
+         * ------------------------------------------
+         * 2. TEXT MASKING
+         * Judul (h1, h2) dipecah per kata; tiap kata naik dari balik "topeng" saat terlihat di layar.
+         * ------------------------------------------
+         */
+        function initTextMask() {
+            const none = { hold() {}, release() {} };
+            if (reduceMotion || !('IntersectionObserver' in window)) return none;
+
+            const heads = Array.prototype.slice.call(document.querySelectorAll('main h1, main h2'));
+
+            heads.forEach((el) => {
+                el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+                let idx = 0;
+                const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+                const nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+
+                nodes.forEach((node) => {
+                    const frag = document.createDocumentFragment();
+                    node.nodeValue.split(/(\s+)/).forEach((part) => {
+                        if (part === '') return;
+                        if (/^\s+$/.test(part)) {
+                            frag.appendChild(document.createTextNode(' '));
+                            return;
+                        }
+                        const word = document.createElement('span');
+                        word.className = 'tm-word';
+                        const inner = document.createElement('span');
+                        inner.className = 'tm-inner';
+                        inner.textContent = part;
+                        inner.style.setProperty('--tm-d', Math.min(idx * 55, 700) + 'ms');
+                        idx++;
+                        word.appendChild(inner);
+                        frag.appendChild(word);
+                    });
+                    node.parentNode.replaceChild(frag, node);
+                });
+            });
+
+            let holding = true;
+            const pending = new Set();
+            const reveal = (el) => el.classList.add('tm-revealed');
+
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    io.unobserve(entry.target);
+                    if (holding) pending.add(entry.target); else reveal(entry.target);
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+            heads.forEach((el) => io.observe(el));
+
+            return {
+                hold() { holding = true; },
+                release() {
+                    holding = false;
+                    pending.forEach(reveal);
+                    pending.clear();
+                }
+            };
+        }
+
+        /**
+         * ------------------------------------------
+         * 3. IMAGE PARALLAX
+         * - Gambar contoh website: bergeser pelan di dalam frame-nya saat scroll.
+         * - Frame gambar Hero: bergeser sedikit lebih lambat dari scroll (gambar di dalamnya TIDAK diperbesar).
+         * ------------------------------------------
+         */
+        function initParallax() {
+            if (reduceMotion) return;
+            document.documentElement.classList.add('parallax-on');
+
+            const heroRoot = document.getElementById('hero-carousel');
+            const heroFrame = heroRoot ? heroRoot.parentElement : null;
+            let heroOffset = 0;
+            let ticking = false;
+
+            // Posisi relatif terhadap tengah layar: -1 (sudah lewat atas) s.d. 1 (baru masuk dari bawah)
+            const progress = (top, height, vh) => clamp(((top + height / 2) - vh / 2) / (vh / 2 + height / 2), -1, 1);
+
+            function update() {
+                ticking = false;
+                const vh = window.innerHeight;
+
+                if (heroFrame) {
+                    const r = heroFrame.getBoundingClientRect();
+                    const top = r.top - heroOffset;
+                    if (top < vh + 120 && top + r.height > -120) {
+                        const max = window.innerWidth < 768 ? 24 : 40;
+                        heroOffset = -progress(top, r.height, vh) * max;
+                        heroFrame.style.translate = '0 ' + heroOffset.toFixed(2) + 'px';
+                    }
+                }
+
+                document.querySelectorAll('#portofolio-container img').forEach((img) => {
+                    const box = img.parentElement.getBoundingClientRect();
+                    if (box.bottom < -80 || box.top > vh + 80) return;
+                    const shift = -progress(box.top, box.height, vh) * box.height * 0.07;
+                    img.style.translate = '0 ' + shift.toFixed(2) + 'px';
+                });
+            }
+
+            const request = () => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(update);
+            };
+
+            window.addEventListener('scroll', request, { passive: true });
+            window.addEventListener('resize', request);
+            window.addEventListener('load', request);
+
+            const portfolio = document.getElementById('portofolio-container');
+            if (portfolio && 'MutationObserver' in window) {
+                new MutationObserver(request).observe(portfolio, { childList: true });
+            }
+            request();
+        }
+
+        /**
+         * ------------------------------------------
+         * 4. PAGE TRANSITION
+         * - Saat halaman dibuka: tirai dengan logo, lalu terangkat ke atas.
+         * - Saat klik menu/tombol anchor (#layanan, #harga, dll): tirai menutup, pindah, lalu terangkat.
+         * ------------------------------------------
+         */
+        function initPageTransition(hero, text) {
+            const overlay = document.getElementById('page-transition');
+            if (!overlay || reduceMotion) {
+                text.release();
+                hero.start();
+                return;
+            }
+
+            overlay.style.animation = 'none'; // JavaScript berjalan: matikan pengaman CSS
+            const accent = overlay.querySelector('.pt-panel--accent');
+            const base = overlay.querySelector('.pt-panel--base');
+            const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)';
+
+            const block = (e) => e.preventDefault();
+            overlay.addEventListener('wheel', block, { passive: false });
+            overlay.addEventListener('touchmove', block, { passive: false });
+
+            const slide = (el, from, to, ms, delay) => el.animate(
+                [{ transform: 'translateY(' + from + ')' }, { transform: 'translateY(' + to + ')' }],
+                { duration: ms, delay: delay, easing: EASE, fill: 'both' }
+            );
+
+            function cover(ms) {
+                overlay.classList.remove('is-idle');
+                return Promise.all([
+                    slide(accent, '100%', '0%', ms, 0).finished,
+                    slide(base, '100%', '0%', ms, 90).finished
+                ]);
+            }
+
+            function reveal(ms) {
+                return Promise.all([
+                    slide(base, '0%', '-100%', ms, 0).finished,
+                    slide(accent, '0%', '-100%', ms, 90).finished
+                ]).then(() => {
+                    overlay.classList.add('is-idle');
+                    [accent, base].forEach((p) => p.getAnimations().forEach((a) => a.cancel()));
+                });
+            }
+
+            // Tirai pembuka
+            const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready.catch(() => {}) : Promise.resolve();
+            Promise.race([Promise.all([wait(1150), fontsReady, hero.ready]), wait(3200)])
+                .then(() => {
+                    setTimeout(text.release, 380);
+                    return reveal(900);
+                })
+                .catch(() => { overlay.classList.add('is-idle'); text.release(); })
+                .then(() => hero.start());
+
+            // Transisi saat berpindah section lewat link anchor
+            let navBusy = false;
+            const jump = (target, href) => {
+                window.scrollTo(0, target ? target.getBoundingClientRect().top + window.pageYOffset : 0);
+                try { history.replaceState(null, '', href); } catch (err) {}
+            };
+
+            document.addEventListener('click', (e) => {
+                if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                const link = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+                if (!link) return;
+
+                const href = link.getAttribute('href');
+                let target = null;
+                if (href !== '#') {
+                    try { target = document.querySelector(href); } catch (err) { return; }
+                    if (!target) return;
+                }
+
+                e.preventDefault();
+                if (navBusy) return;
+                navBusy = true;
+                text.hold();
+
+                cover(650)
+                    .then(() => { jump(target, href); return wait(140); })
+                    .then(() => { setTimeout(text.release, 300); return reveal(750); })
+                    .catch(() => { overlay.classList.add('is-idle'); text.release(); })
+                    .then(() => { navBusy = false; });
+            });
+        }
+
+        const hero = initHeroCarousel();
+        const text = initTextMask();
+        initParallax();
+        initPageTransition(hero, text);
+    })();
+    </script>
+</body>
+</html>
